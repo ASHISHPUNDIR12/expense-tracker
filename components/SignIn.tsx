@@ -1,0 +1,12 @@
+// components/SignInButton.tsx
+'use client';
+
+import { signIn } from 'next-auth/react';
+
+export default function SignInButton() {
+  return (
+    <button onClick={() => signIn('google', { callbackUrl: '/dashboard' })}>
+      Sign in with Google
+    </button>
+  );
+}
