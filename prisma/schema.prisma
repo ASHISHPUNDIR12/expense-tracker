@@ -29,11 +29,20 @@ model Expense {
   id Int @id @default(autoincrement())
   title String?
   description String?
-  category String?
+  category ExpenseCategory @default(Other)
   amount Decimal 
   date DateTime @default(now())
   userId String
   user User @relation(fields: [userId], references: [id])
+}
+
+enum ExpenseCategory {
+  Food
+  Transport
+  Housing
+  Bills
+  Entertainment
+  Other
 }
 
 model Account {
