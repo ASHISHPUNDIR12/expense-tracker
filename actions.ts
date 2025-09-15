@@ -27,9 +27,28 @@ export async function addExpense(formData: FormData) {
         userId,
       },
     });
-    revalidatePath("/dashboard")
+    revalidatePath("/dashboard");
   } catch (error) {
     console.error("error creating a expense ", error);
   }
 }
+// delete
 
+export async function deleteExpense(id: number) {
+  const session = await auth()
+  const userId = session?.user?.id
+  if(!userId){
+    throw new Error("you must signed in to delete an expense")
+  }
+  try {
+    await prisma.expense.delete({
+      where: {
+        id: id,
+        userId : userId
+      },
+    });
+    revalidatePath("/dashboard")
+  } catch (err) {
+    console.error("error deleting expense", err);
+  }
+}
