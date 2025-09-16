@@ -1,6 +1,6 @@
 "use client ";
 import { addExpense } from "@/actions";
-import React from "react";
+import React, { useState } from "react";
 import { SubmitButton } from "./SubmitButton";
 
 const categories = [
