@@ -39,9 +39,20 @@ export default async function page({
       <p className="text-4xl font-bold">${monthlyTotal.toFixed(2)}</p>
       <FilterControls />
       <ul className="space-y-2">
-        {expenses.map((expense) => (
-          <Expense key={expense.id} expense={expense} />
-        ))}
+       {expenses.map((expense) => {
+        // Create a plain, serializable object first
+        const plainExpense = {
+          title : expense.title,
+          id: expense.id,
+          description: expense.description,
+          amount: expense.amount.toNumber(), // Convert Decimal to number
+          date: expense.date.toISOString(),   // Convert Date to string
+          category: expense.category,
+          userId: expense.userId,
+        };
+        
+        return <Expense key={expense.id} expense={plainExpense} />;
+      })}
       </ul>
       {expenses.length === 0 && (
         <p>You have no expenses yet. Add one to get started!</p>
