@@ -1,3 +1,10 @@
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+
 import { auth } from "@/auth";
 import CategoryChart from "@/components/CategoryChart";
 import CreateExpenseForm from "@/components/CreateExpenseForm";
@@ -28,35 +35,72 @@ export default async function page({
   const monthlyTotal = await getMonthlyTotal(session.user.id, dateFilter);
   const categoryTotal = await getCategoryTotal(session.user.id, dateFilter);
   return (
-    <div>
-      <h1 className="text-3xl font-bold mb-4">Welcome, {session.user.name}!</h1>
-
-      <CreateExpenseForm />
-      <div className="bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold mb-4">Spending by Category</h2>
-        <CategoryChart data={categoryTotal} />
-      </div>
-      <p className="text-4xl font-bold">${monthlyTotal.toFixed(2)}</p>
-      <FilterControls />
-      <ul className="space-y-2">
-       {expenses.map((expense) => {
-        // Create a plain, serializable object first
-        const plainExpense = {
-          title : expense.title,
-          id: expense.id,
-          description: expense.description,
-          amount: expense.amount.toNumber(), // Convert Decimal to number
-          date: expense.date.toISOString(),   // Convert Date to string
-          category: expense.category,
-          userId: expense.userId,
-        };
-        
-        return <Expense key={expense.id} expense={plainExpense} />;
-      })}
-      </ul>
-      {expenses.length === 0 && (
-        <p>You have no expenses yet. Add one to get started!</p>
-      )}
+    <div className="p-4 md:p-8">
+    <div className="flex justify-between items-center mb-8">
+      <h1 className="text-3xl font-bold">Welcome, {session.user.name}!</h1>
     </div>
+
+    <FilterControls />
+
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+      {/* Total Spending Card */}
+      <Card className="lg:col-span-1">
+        <CardHeader>
+          <CardTitle className="text-lg text-gray-500">Total Spending</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-4xl font-bold">${monthlyTotal.toFixed(2)}</p>
+        </CardContent>
+      </Card>
+
+      {/* Category Chart Card */}
+      <Card className="lg:col-span-2">
+        <CardHeader>
+          <CardTitle>Spending by Category</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <CategoryChart data={categoryTotal} />
+        </CardContent>
+      </Card>
+    </div>
+
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* Add Expense Form Card */}
+      <Card className="lg:col-span-1">
+        <CardHeader>
+          <CardTitle>Add New Expense</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <CreateExpenseForm />
+        </CardContent>
+      </Card>
+
+      {/* Expense List Card */}
+      <Card className="lg:col-span-2">
+        <CardHeader>
+          <CardTitle>Recent Expenses</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ul className="space-y-2">
+            {expenses.map((expense:any) => {
+              const plainExpense = {
+                title : expense.title,
+                id: expense.id,
+                description: expense.description,
+                amount: expense.amount.toNumber(),
+                date: expense.date.toISOString(),
+                category: expense.category,
+                userId: expense.userId,
+              };
+              return <Expense key={expense.id} expense={plainExpense} />;
+            })}
+          </ul>
+          {expenses.length === 0 && (
+            <p>You have no expenses yet. Add one to get started!</p>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  </div>
   );
 }
