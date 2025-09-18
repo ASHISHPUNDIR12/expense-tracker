@@ -21,14 +21,15 @@ import { redirect } from "next/navigation";
 export default async function page({
   searchParams,
 }: {
-  searchParams?: { period?: string };
+  searchParams?: Promise<{ period?: string }>;
 }) {
   const session = await auth();
 
   if (!session?.user?.id) {
     redirect("/");
   }
-  const period = searchParams?.period || "month";
+    const params = await searchParams;
+  const period = params?.period ?? "month";
   const dateFilter = getDateRange(period);
 
   const expenses = await getExpenses(session.user.id, dateFilter);
