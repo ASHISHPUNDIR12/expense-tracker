@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SessionProvider } from "next-auth/react";
 import AuthButtons from "@/components/AuthButtons";
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,7 +32,9 @@ export default function RootLayout({
       >
         <SessionProvider>
           <div className="bg-black text-2xl text-gray-300 flex justify-between p-2 w-[99vw]">
-            <h1>ExpenseTirakar</h1>
+            <Link href={"/"}>
+             <h1  >ExpenseTirakar</h1>
+            </Link>
             <AuthButtons />
           </div>
 
