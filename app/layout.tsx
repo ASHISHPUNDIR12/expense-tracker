@@ -31,7 +31,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <SessionProvider>
-          <div className="bg-black text-2xl text-gray-300 flex justify-between p-2 w-[99vw]">
+          <div className="bg-black text-2xl text-gray-300 flex justify-between p-2 w-[100%]">
             <Link href={"/"}>
              <h1  >ExpenseTirakar</h1>
             </Link>
